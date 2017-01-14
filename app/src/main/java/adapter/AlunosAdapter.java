@@ -30,9 +30,9 @@ public class AlunosAdapter extends ArrayAdapter<Aluno> {
     private final List<Aluno> alunos;
 
     public AlunosAdapter(Context context, int resource, List<Aluno> alunos) {
-        super(context, resource,alunos);
-        this.context=context;
-        this.alunos=alunos;
+        super(context, resource, alunos);
+        this.context = context;
+        this.alunos = alunos;
     }
 
     @NonNull
@@ -40,12 +40,22 @@ public class AlunosAdapter extends ArrayAdapter<Aluno> {
     public View getView(int position, View convertView, ViewGroup parent) {
         Aluno aluno = alunos.get(position);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.layout_item, null);
+        View view=convertView;
+        if(view==null){
+           view = inflater.inflate(R.layout.layout_item, null);
+        }
         ImageView foto = (ImageView) view.findViewById(R.id.item_foto);
         TextView nome = (TextView) view.findViewById(R.id.item_nome);
         TextView telefone = (TextView) view.findViewById(R.id.item_telefone);
         nome.setText(aluno.getNome());
         telefone.setText(aluno.getTelefone());
+        if (aluno.getCaminhoFoto() != null) {
+            String caminhoFoto=aluno.getCaminhoFoto();
+            Bitmap bitmap = BitmapFactory.decodeFile(caminhoFoto);
+            Bitmap bitmapReduzido = Bitmap.createScaledBitmap(bitmap, 100, 100, true);
+            foto.setImageBitmap(Bitmap.createBitmap(bitmapReduzido));
+            foto.setScaleType(ImageView.ScaleType.FIT_XY);
+        }
         return view;
     }
 }

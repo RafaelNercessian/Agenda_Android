@@ -65,10 +65,8 @@ public class ListaAlunosActivity extends AppCompatActivity {
         AlunoDAO dao = new AlunoDAO(this);
         alunos = dao.listaAlunosBanco();
         listaAlunos = (ListView) findViewById(R.id.lista_alunos);
-      //  ArrayAdapter<Aluno> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, alunos);
         ArrayAdapter<Aluno> alunosAdapter = new AlunosAdapter(this, 0, alunos);
-       // listaAlunos.setAdapter(adapter);
-      listaAlunos.setAdapter(alunosAdapter);
+        listaAlunos.setAdapter(alunosAdapter);
     }
 
     @Override
@@ -84,18 +82,18 @@ public class ListaAlunosActivity extends AppCompatActivity {
                 Intent intentLigar = new Intent(Intent.ACTION_CALL);
                 intentLigar.setData(Uri.parse("tel:" + aluno.getTelefone()));
                 if (ActivityCompat.checkSelfPermission(ListaAlunosActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                   ActivityCompat.requestPermissions(ListaAlunosActivity.this,new String[]{Manifest.permission.CALL_PHONE},123);
-                }else{
+                    ActivityCompat.requestPermissions(ListaAlunosActivity.this, new String[]{Manifest.permission.CALL_PHONE}, 123);
+                } else {
                     startActivity(intentLigar);
                 }
                 return false;
             }
         });
-        
+
         MenuItem site = menu.add("Site");
         String siteAluno = aluno.getSite();
-        if(!siteAluno.startsWith("http://")){
-            siteAluno="http://"+siteAluno;
+        if (!siteAluno.startsWith("http://")) {
+            siteAluno = "http://" + siteAluno;
         }
         Intent intentSite = new Intent(Intent.ACTION_VIEW);
         intentSite.setData(Uri.parse(siteAluno));
@@ -103,12 +101,12 @@ public class ListaAlunosActivity extends AppCompatActivity {
 
         MenuItem sms = menu.add("SMS");
         Intent intentSms = new Intent(Intent.ACTION_VIEW);
-        intentSms.setData(Uri.parse("sms:"+aluno.getTelefone()));
+        intentSms.setData(Uri.parse("sms:" + aluno.getTelefone()));
         sms.setIntent(intentSms);
 
         MenuItem mapa = menu.add("Mapa");
         Intent intentMapa = new Intent(Intent.ACTION_VIEW);
-        intentMapa.setData(Uri.parse("geo:0,0?q="+aluno.getEndereco()));
+        intentMapa.setData(Uri.parse("geo:0,0?q=" + aluno.getEndereco()));
         mapa.setIntent(intentMapa);
 
         MenuItem deletar = menu.add("Deletar");
@@ -118,7 +116,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
                 AlunoDAO dao = new AlunoDAO(ListaAlunosActivity.this);
                 dao.remover(aluno);
                 dao.close();
-                Toast.makeText(ListaAlunosActivity.this,"Deletar aluno "+aluno.getNome(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(ListaAlunosActivity.this, "Deletar aluno " + aluno.getNome(), Toast.LENGTH_SHORT).show();
                 carregaLista();
                 return false;
             }
